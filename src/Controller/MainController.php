@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Manager;
+use App\Entity\Post;
 use App\Form\LoginType;
 use App\Form\RegisterType;
 use App\Repository\PostRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,6 +55,21 @@ class MainController extends AbstractController
         return $this->render('main/list.html.twig', [
             'posts' => $posts
         ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_POST_MANAGER")
+     * @Route("/post/{id}", name="app_post_remove")
+     * @param Post $post
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function removePost(Post $post, EntityManagerInterface $entityManager)
+    {
+        $entityManager->remove($post);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_post_list');
     }
 
     /**
