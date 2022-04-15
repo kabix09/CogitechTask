@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block container %}
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Hello there</h1>
+            <p class="col-md-8 fs-4">Welcome to the web page made by Jakub Fiturski. It's a simple website presenting an example solution of the task.</p>
+            <a href="{{ path('app_post_list') }}" class="btn btn-primary btn-lg" type="button">Show posts</a>
+        </div>
+    </div>
+    <div class="h-100 p-5 text-white bg-dark rounded-3">
+        <h2>Get the API version</h2>
+        <p>You can also get a serialized representation of posts in the json format</p>
+        <a href="{{ path('app_post_api_list') }}" class="btn btn-outline-light" type="button">Show json</a>
+    </div>
+{% endblock %}
