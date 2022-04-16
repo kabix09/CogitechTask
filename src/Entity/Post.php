@@ -2,14 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PostRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Post
  *
  * @ORM\Table(name="Post")
  * @ORM\Entity(repositoryClass=PostRepository::class)
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={
+ *          "get"={}
+ *     },
+ *     shortName="posts",
+ *     normalizationContext={"groups"={"post:read"}, "swagger_definition_name"="read"}
+ * )
  */
 class Post
 {
@@ -19,6 +29,7 @@ class Post
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"post:read"})
      */
     private $id;
 
@@ -26,6 +37,7 @@ class Post
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=80, nullable=false)
+     * @Groups({"post:read"})
      */
     private $title;
 
@@ -33,6 +45,7 @@ class Post
      * @var string
      *
      * @ORM\Column(name="body", type="string", length=150, nullable=false)
+     * @Groups({"post:read"})
      */
     private $body;
 
@@ -40,6 +53,7 @@ class Post
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=50, nullable=false)
+     * @Groups({"post:read"})
      */
     private $author;
 

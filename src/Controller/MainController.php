@@ -18,6 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class MainController extends AbstractController
 {
@@ -25,14 +26,20 @@ class MainController extends AbstractController
      * @var PostRepository
      */
     private $postRepository;
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
 
     /**
      * MainController constructor.
      * @param PostRepository $postRepository
+     * @param SerializerInterface $serializer
      */
-    public function __construct(PostRepository $postRepository)
+    public function __construct(PostRepository $postRepository, SerializerInterface $serializer)
     {
         $this->postRepository = $postRepository;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -77,12 +84,35 @@ class MainController extends AbstractController
      */
     public function getPosts(): Response
     {
-        dd('api version');
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        return new Response(
+            $this->serializer->serialize(
+                $this->postRepository->findAll(),
+                'json',
+                ['groups' => 'post:read']
+
+            ),
+            200,
+           ['Content-Type' => 'application/json']
+        );
     }
 
+    /**
+     * @Route("/posts/{id}", name="app_post_api_item")
+     */
+    public function getPostItem(Post $post): Response
+    {
+        return new Response(
+            $this->serializer->serialize(
+                $post,
+                'json',
+                ['groups' => 'post:read']
+
+            ),
+            200,
+            ['Content-Type' => 'application/json']
+        );
+    }
+    
     /**
      * @Route("/login", name="app_login")
      * @param Request $request

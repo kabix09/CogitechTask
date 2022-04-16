@@ -25,3 +25,7 @@ services:
     App\Event\Listener\RequestListener:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    App\Event\Listener\Error404Listener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
