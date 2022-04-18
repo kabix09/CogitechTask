@@ -15,7 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     fields={"email"},
  *     message="This email already exists"
  * )
- * @method string getUserIdentifier()
  */
 class Manager implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -116,13 +115,13 @@ class Manager implements UserInterface, PasswordAuthenticatedUserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
     public function __call($name, $arguments)
     {
         // TODO: Implement @method string getUserIdentifier()
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

@@ -36,12 +36,6 @@ class RegisterType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'This field is required'
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'This email is too short',
-                        'max' => 40,
-                        'maxMessage' => 'This email is too long'
                     ])
                 ]
             ])
@@ -49,7 +43,13 @@ class RegisterType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Passwords must be the same',
                 'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password']
+                'second_options' => ['label' => 'Repeat Password'],
+                'constraints' => [
+                    new Length([
+                        'min' => 8,
+                        'minMessage' => 'This password is too short'
+                    ])
+                ]
             ])
             ->add('acceptTerms', CheckboxType::class, [
                 'mapped' => false

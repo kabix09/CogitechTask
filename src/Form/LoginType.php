@@ -28,6 +28,10 @@ class LoginType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'This field is required'
+                    ]),
+                    new Length([
+                        'min' => 8,
+                        'minMessage' => 'This password is too short'
                     ])
                 ]
             ])

@@ -52,7 +52,7 @@ final class PostsCollectionDenormalizer implements ContextAwareDenormalizerInter
     /**
      * @inheritDoc
      */
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         return is_array($data) && $type === 'App\Entity\Post[]';
     }

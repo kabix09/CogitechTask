@@ -14,7 +14,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class LoadPostsCommand extends Command
 {
-    private const URL = ['users' => 'http://jsonplaceholder.typicode.com/users', 'posts' => 'http://jsonplaceholder.typicode.com/posts'];
+    private const URL_FILE_PATH = ['users' => '/users', 'posts' => '/posts'];
 
     protected static $defaultName = 'app:load-posts';
     protected static $defaultDescription = 'Load posts from http://jsonplaceholder.typicode.com/posts';
@@ -31,6 +31,7 @@ class LoadPostsCommand extends Command
      * @var EntityManagerInterface
      */
     private $entityManager;
+    private string $jsonDataSourceLink;
 
     /**
      * LoadPostsCommand constructor.
@@ -38,13 +39,14 @@ class LoadPostsCommand extends Command
      * @param HttpClientInterface $client
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(SerializerInterface $serializer, HttpClientInterface $client, EntityManagerInterface $entityManager)
+    public function __construct(SerializerInterface $serializer, HttpClientInterface $client, EntityManagerInterface $entityManager, string $jsonDataSourceLink)
     {
         parent::__construct(self::$defaultName);
 
         $this->client = $client;
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
+        $this->jsonDataSourceLink = $jsonDataSourceLink;
     }
 
     protected function configure(): void
@@ -56,8 +58,8 @@ class LoadPostsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $responseUsers = $this->client->request('GET', self::URL['users']);
-        $responsePosts = $this->client->request('GET', self::URL['posts']);
+        $responseUsers = $this->client->request('GET', $this->jsonDataSourceLink . self::URL_FILE_PATH['users']);
+        $responsePosts = $this->client->request('GET', $this->jsonDataSourceLink . self::URL_FILE_PATH['posts']);
 
         $users = $this->serializer->deserialize($responseUsers->getContent(), 'App\Entity\User[]', 'json');
 

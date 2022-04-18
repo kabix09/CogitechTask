@@ -32,8 +32,6 @@ final class PostDenormalizer implements ContextAwareDenormalizerInterface, Cache
 
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
-        //$user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $data['userId']]);
-
         /** @var int $id */
         $id = $data['userId'];
 
@@ -49,7 +47,7 @@ final class PostDenormalizer implements ContextAwareDenormalizerInterface, Cache
         return $post;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
         if($type !== Post::class)
             return false;
